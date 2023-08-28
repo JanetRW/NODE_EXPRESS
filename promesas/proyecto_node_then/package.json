@@ -1,0 +1,12 @@
+{
+  "name": "proyecto_node_then",
+  "version": "1.0.0",
+  "description": "",
+  "main": "indexthen.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
