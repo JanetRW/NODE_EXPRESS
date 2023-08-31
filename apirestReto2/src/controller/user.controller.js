@@ -19,27 +19,54 @@
 // • Insertar las dos siguientes líneas de código en el fichero app.js:
 // let cors = require('cors’)
 // app.use(cors())
+const Books = require('../models/book')
 
-
-let books = null; //{id_book:"102030",id_user:0, title:"Titanic",type: "tapa blanda",author:"Yvan Figueiras",price:17,photo:"https://imagessl0.casadellibro.com/a/l/t5/53/9788416808953.jpg"}
+let books = null; //{"id_book":"102030","id_user":0, "title":"Titanic","type": "tapa blanda","author":"Yvan Figueiras","price":17,"photo":"https://imagessl0.casadellibro.com/a/l/t5/53/9788416808953.jpg"}
 
 function getStart(request,response)
 {
     let respuesta ={error:false,codigo:200,mensaje:"Punto de Inicio"};
     response.send(respuesta);
 }
+// function getBooks(request,response)
+// {
+//     let respuesta;
+//     if (books != null) {
+//         if (req.query.id != undefined) {
+//             let i = 0;
 
+//             while (request.query.id != books[i].id_book && i < books.length) {
+//                 i++;
+//             }
+
+//             if (request.query.id == books[i].id_book) {
+//                 respuesta = books[i];
+//                 respuesta = {error: true, codigo: 200, data:books};
+//             }else{
+//                 respuesta =  {error: true, codigo: 404, mensaje: "No existe ningún libro con la id solicitada"};
+//             }
+//         }else{
+//             respuesta = books;
+//         }
+//     }else{
+//         respuesta = {error: true, codigo: 404, mensaje: "No existen libros"};
+//     }
+//     response.send(respuesta);
+// }
 function getBooks(request, response)
 {
     let respuesta;
 
-    if (books!=null) 
+    if (books!==null) 
         respuesta = books;
+        //respuesta = {error: true, codigo: 200, data:books};
     else
         respuesta = {error: true, codigo: 404, mensaje: "No existen libros"};
     
     response.send(respuesta);
 }
+
+
 
 // function getBooks(request,response)
 // {
@@ -56,35 +83,31 @@ function getBooks(request, response)
 //para esto en Postman se escribe GET -->localhost:3000/books?idBook=123
 //otra opción en Postman es poner en Params idBook   value 123 en la url ya pone sola la direccion
 
+
+
 function postBooks(request, response)
 {
     let respuesta;
     console.log(request.body);
-    // let  books = {
-    //     id_book: request.body.id_book,
-    //     id_user: request.body.id_user,
-    //     title: request.body.title,
-    //     type: request.body.type,
-    //     author: request.body.author,
-    //     price: request.body.price,
-    //     photo: request.body.photo
-    // };
-
-    if (books==null || books.id_book != request.body.id_book)
+    
+    
+    if (books===null)
     {
-        books ={id_book: request.body.id_book,
-                id_user: request.body.id_user,
-                title: request.body.title,
-                type: request.body.type,
-                author: request.body.author,
-                price: request.body.price,
-                photo: request.body.photo}
+
+         books = new Books(request.body.id_book,
+                            request.body.id_user,
+                            request.body.title,
+                            request.body.type,
+                            request.body.author,
+                            request.body.price,
+                            request.body.photo) 
         respuesta= {error: false,
                     codigo: 200,
                     mensaje: "Libro añadido correctamente",
                     data: books}
-                   
+                    
     }
+          
     else
         respuesta = {
                     error: true,
@@ -99,26 +122,15 @@ function postBooks(request, response)
 function putBooks(request,response){
     let respuesta;
 
-    // let books ={
-    //     id_book: request.body.id_book,
-    //     id_user: request.body.id_user,
-    //     title: request.body.title,
-    //     type: request.body.type,
-    //     author: request.body.author,
-    //     price: request.body.price,
-    //     photo: request.body.photo
-    // };
-
-
     if(books!=null)
     {
-        books.id_book = request.body.id_book1;
-        books.id_user = request.body.id_user1;
-        books.title   = request.body.title1;
-        books.type    = request.body.type1;
-        books.author  = request.body.author1;
-        books.price   = request.body.price1;
-        books.photo   = request.body.photo1;
+        books.id_book = request.body.id_book;
+        books.id_user = request.body.id_user;
+        books.title   = request.body.title;
+        books.type    = request.body.type;
+        books.author  = request.body.author;
+        books.price   = request.body.price;
+        books.photo   = request.body.photo;
 
         respuesta = {
                     error: false,
