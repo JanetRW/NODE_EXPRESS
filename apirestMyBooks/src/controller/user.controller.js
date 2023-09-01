@@ -12,13 +12,15 @@ let books = [new Books(45014882,'La Casa de las sombras','Tapa blanda','Adam Nev
 
 function getBooks(request, response){
     let result;
-
-    if (books.length >=1) 
-        result = {error: false, codigo: 200, data: books};
+    
+    if (books != null){
+        result = {error: false, codigo: 200,mensaje:"Estos son los libros", data: books};
+        ;}
     else
         result = {error: true, codigo: 404, mensaje: "No existen libros"};
     
     response.send(result);
+    console.log(result);
 }
 
 function getBooksbyId(request, response){
