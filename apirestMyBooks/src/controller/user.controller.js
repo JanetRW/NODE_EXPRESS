@@ -11,20 +11,29 @@ let books = [new Books(45014882,'La Casa de las sombras','Tapa blanda','Adam Nev
             ]
 
 function getBooks(request, response){
+    //console.log("no se porque entra aqui");
     let result;
     
     if (books != null){
-        result = {error: false, codigo: 200,mensaje:"Estos son los libros", data: books};
+        result = {error: false, codigo: 200,mensaje:"Estos son los libros", res: books};
         ;}
     else
         result = {error: true, codigo: 404, mensaje: "No existen libros"};
     
     response.send(result);
-    console.log(result);
+    //console.log(result);
 }
 
 function getBooksbyId(request, response){
-    let idBook = request.query.id_book; 
+    console.log("TEST");
+/*     console.log(request);
+    console.log(response); */
+    //let idBook = request.query.id_book; 
+    let idBook_NOBORRAR = request.body.id_book; 
+
+    let idBook = request.params.id;
+
+    console.log("es esta la id que toca?: " + idBook);
     let book = books.find(book => book.id_book == idBook);
 
     if (book != 0){
@@ -46,7 +55,7 @@ function getBooksbyId(request, response){
 }
 
 function postBooks(request, response){
-
+    let result;
     let newBook = {
         id_book: request.body.id_book,
         id_user: request.body.id_user,
@@ -60,29 +69,30 @@ function postBooks(request, response){
     let bookExist = books.find(book => book.id_book == newBook.id_book);
 
     if (bookExist){
-        let result = {
+            result = {
             error: true,
             codigo: 200,
             mensaje: "El libro ya existe",
-            data: null
+            res_book: null
         }
-        response.send(result);
+        //response.send(result);
 
     }else{
         books.push(newBook);
 
-        let result = {
-            error: false,
-            codigo: 200,
-            mensaje: "Libro añadido correctamente",
-            data: newBook
+            result = {
+                error: false,
+                codigo: 200,
+                mensaje: "Libro añadido correctamente",
+                res_book: newBook
         };
-        response.send(result);
+    response.send(result);
     }
 }
 
 function putBooks(request,response){
-    let bookEdit = request.query.id_book; 
+    let bookEdit = request.body.id_book;
+    //console.log(bookEdit);
     let bookEdited ={
         id_book: request.body.id_book,
         id_user: request.body.id_user,
@@ -94,25 +104,26 @@ function putBooks(request,response){
     };
 
     let bookIndex = books.findIndex(book => book.id_book == bookEdit);
-    
+    console.log(bookIndex);
+
     if(bookIndex != -1){
         books[bookIndex] = {
-                            ...books[bookIndex],
-                            ...bookEdited
-        };
-        let result = {
+            ...books[bookIndex],
+            ...bookEdited
+            };
+            let result = {
             error: false,
             codigo: 200,
             mensaje: "Libro actualizado",
-            data: bookEdited
-        }
-        response.send(result);
-    }else{
+            res: bookEdited
+            }
+            response.send(result);
+    } else {
         let result ={
             error: true,
             codigo: 404,
             mensaje: "El libro no existe",
-            data: null
+            res: null
         }
         response.send(result);
     }
